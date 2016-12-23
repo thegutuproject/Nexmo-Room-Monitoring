@@ -4,11 +4,31 @@ import cv2
 import datetime
 import imutils
 import time
+import requests
+import urllib2
+
+def initializeRequestServer():
+    url = r"0.0.0.0:65534/initialize"
+
+    # r = requests.get(url, data=params, verify=False)
+    request = urllib2.Request(url)
+
+
+def notifyServer():
+    params = {"intruderDetected": True}
+
+    url = r"0.0.0.0:65534/upload"
+
+    # r = rqqqequests.get(url, data=params, verify=False)
+    request = urllib2.Request(url)
 
 
 def processVideo(webCam):
     firstFrame = None
     time.sleep(0.25)
+
+    intruderDetected = False
+    initializeRequestServer()
 
     while True:
         (grabbed, frame) = webCam.read()
@@ -41,6 +61,8 @@ def processVideo(webCam):
             (x, y, w, h) = cv2.boundingRect(c)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
             roomStatus = "Occupied"
+            cv2.imwrite('intruder.jpg', frame)
+            intruderDetected = True
 
         cv2.putText(frame, "Room Status: {}".format(roomStatus), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255),
                     2)
@@ -56,6 +78,9 @@ def processVideo(webCam):
             break
 
         firstFrame = None
+
+        if intruderDetected:
+            notifyServer()
 
     webCam.release()
     cv2.destroyAllWindows()
