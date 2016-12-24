@@ -33,9 +33,6 @@ def processVideo(webCam):
     start = timeit.default_timer()
 
     while True:
-        for x in range(0, 120):
-            webCam.grab()
-
         (grabbed, frame) = webCam.read()
         roomStatus = "Unoccupied"
 
@@ -69,6 +66,7 @@ def processVideo(webCam):
             cv2.imwrite('intruder.jpg', frame)
             print "Intruder Detected!"
             notifyServer()
+            time.sleep(5)
             # intruderDetected = True
 
         cv2.putText(frame, "Room Status: {}".format(roomStatus), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255),
