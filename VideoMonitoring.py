@@ -6,21 +6,21 @@ import imutils
 import time
 import requests
 import urllib2
+import timeit
+
 
 def initializeRequestServer():
-    url = r"0.0.0.0:65534/initialize"
-
-    # r = requests.get(url, data=params, verify=False)
-    request = urllib2.Request(url)
+    url = "http://127.0.0.1:65534/initialize"
+    request = requests.get(url)
+    # request = urllib2.Request(url)
+    print "Initialized Sever"
+    print request
 
 
 def notifyServer():
-    params = {"intruderDetected": True}
-
-    url = r"0.0.0.0:65534/upload"
-
-    # r = rqqqequests.get(url, data=params, verify=False)
-    request = urllib2.Request(url)
+    url = "http://127.0.0.1:65534/upload"
+    request = requests.get(url)
+    print "Notified Server"
 
 
 def processVideo(webCam):
@@ -30,7 +30,12 @@ def processVideo(webCam):
     intruderDetected = False
     initializeRequestServer()
 
+    start = timeit.default_timer()
+
     while True:
+        for x in range(0, 120):
+            webCam.grab()
+
         (grabbed, frame) = webCam.read()
         roomStatus = "Unoccupied"
 
@@ -53,7 +58,7 @@ def processVideo(webCam):
 
         for c in cnts:
             # if the contour is too small, ignore it
-            if cv2.contourArea(c) < 4000:
+            if cv2.contourArea(c) < 3000:
                 continue
 
             # compute the bounding box for the contour, draw it on the frame,
@@ -62,7 +67,9 @@ def processVideo(webCam):
             cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
             roomStatus = "Occupied"
             cv2.imwrite('intruder.jpg', frame)
-            intruderDetected = True
+            print "Intruder Detected!"
+            notifyServer()
+            # intruderDetected = True
 
         cv2.putText(frame, "Room Status: {}".format(roomStatus), (10, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255),
                     2)
@@ -79,8 +86,8 @@ def processVideo(webCam):
 
         firstFrame = None
 
-        if intruderDetected:
-            notifyServer()
+        # if intruderDetected:
+        #     notifyServer()
 
     webCam.release()
     cv2.destroyAllWindows()
