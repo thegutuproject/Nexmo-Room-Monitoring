@@ -14,7 +14,6 @@ import getopt
 # Get user authentication PIN
 def getPinURL(apiKeysAndTokens):
 	response = "pin"
-	# can be any string at all
 	state = "anything"
 	url = r"https://api.imgur.com/oauth2/authorize?client_id={cid}&response_type={resp}&state={app_state}"
 
@@ -57,19 +56,14 @@ def exchangePinForTokens(apiKeysAndTokens, userAuthorizationPin):
 def uploadImage(apiKeysAndTokens, imgLocation):
 	"""uploads an image using it's URL, the access_token is required"""
 
-	# need to include the authorization headers,
-	# in order to make use of the access token
 	headers = {"authorization": "Bearer {0}".format(apiKeysAndTokens["imgurAccessToken"])}
 
 	upload_url = r'https://api.imgur.com/3/upload'
 
-	# this is the data we'll POST to the api's URL
 	payload = {'image': encodeImage(imgLocation),
 			   'type': 'base64',
 			   'title': "INTRUDER DETECTED " + str(datetime.now())}
 
-	# make the upload, ensuring that the data, headers are included, and
-	# make sure to disable the verification of the SSL. Potential insecurty though
 	r = requests.post(upload_url, data=payload, headers=headers, verify=False)
 
 	# save the json response, print it to screen
@@ -86,7 +80,7 @@ def messageUser(apiKeysAndTokens, pinURL):
 	params = {
 		'api_key': apiKeysAndTokens["nexmoClientId"],
 		'api_secret': apiKeysAndTokens["nexmoClientSecret"],
-		'to': '13476772691',
+		'to': apiKeysAndTokens["phoneNumber"],
 		'from': '12082770230',
 		'text': format(pinURL)
 	}
@@ -103,7 +97,7 @@ def messageUser(apiKeysAndTokens, pinURL):
 
 		# Decode JSON response from UTF-8
 		decoded_response = json.loads(data.decode('utf-8'))
-		# Check if your messages are succesful
+		# Check if your messages are successful
 
 		messages = decoded_response["messages"]
 		for message in messages:
