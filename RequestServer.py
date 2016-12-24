@@ -5,8 +5,10 @@ from flask import request
 import urllib
 import urllib2
 import json
-from datetime import datetime, timedelta, date
+from datetime import datetime, timedelta
 import base64
+import sys
+import getopt
 
 
 # Get user authentication PIN
@@ -121,23 +123,33 @@ def encodeImage(imgLocation):
 	return imgBinary64Data
 
 
-def initialize(apiKeysAndTokens):
-	with open("resources.txt") as resourceFile:
+def initialize(apiKeysAndTokens, resourceFileLocation):
+	with open(resourceFileLocation) as resourceFile:
 		for line in resourceFile:
 			(key, val) = line.split()
 			apiKeysAndTokens[key] = val
 	resourceFile.close()
 
-def writeToFile(apiKeysAndTokens):
-	with open("resources.txt", 'w') as resourceFile:
+def writeToFile(apiKeysAndTokens, resourceFileLocation):
+	with open(resourceFileLocation, 'w') as resourceFile:
 		for (key, value) in apiKeysAndTokens.items():
 			resourceFile.write(key + " " + value + "\n")
 
 
 if __name__ == '__main__':
-
 	apiKeysAndTokens = {}
-	initialize(apiKeysAndTokens)
+	resourceFileLocation = None
+
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], "k:", ["keys="])
+	except getopt.GetoptError:
+		sys.exit(2)
+
+	for opt, arg in opts:
+		if opt in ("-k", "--keys"):
+			resourceFileLocation = arg
+
+	initialize(apiKeysAndTokens, resourceFileLocation)
 
 	print apiKeysAndTokens
 
@@ -163,13 +175,13 @@ if __name__ == '__main__':
 		# If no token date is found, then there is no token
 		if 'imgurTokenDate' not in apiKeysAndTokens or apiKeysAndTokens["imgurTokenDate"] is None:
 			if exchangePinForTokens(apiKeysAndTokens, userAuthorizationPin):
-				writeToFile(apiKeysAndTokens)
+				writeToFile(apiKeysAndTokens, resourceFileLocation)
 				return "", 200
 
 		# If token has expired
 		elif (datetime.now().date() - datetime.strptime(apiKeysAndTokens['imgurTokenDate'], "%Y-%m-%d").date()) > timedelta(days=25):
 			if exchangePinForTokens(apiKeysAndTokens, userAuthorizationPin):
-				writeToFile(apiKeysAndTokens)
+				writeToFile(apiKeysAndTokens, resourceFileLocation)
 				return "", 200
 
 		elif apiKeysAndTokens['imgurAccessToken'] is not None and ((datetime.now().date() - datetime.strptime(apiKeysAndTokens['imgurTokenDate'], "%Y-%m-%d").date()) < timedelta(days=25)):
