@@ -10,26 +10,24 @@ In order to use this properly, please follow the directions below:
 
 1. Install OpenCV2 for Python 2.7
 2. Install Flask
+3. Install imutils
 3. Get a Nexmo API and Imgur API
 4. Create .txt document anywhere you want and type the following. Make sure you have a space in between each one and its value. Essentially we want a space separate file, one item per line. Phone number needs to be (for US) 1##########
+5. Ability to open a port of your choice. I set it to use port 65534. You also need to set your Nexmo callback for SMS receving to your `http://<IPADDRESS>:<PORT>`
+```
+phoneNumber 1xxxxxxxxxx
+nexmoClientId xxxxxxxxxx
+nexmoClientSecret xxxxxxxxxx
+imgurClientId xxxxxxxxxx
+imgurClientSecret xxxxxxxxxx
+```
+6. When running the program, run 
+```
+VideoMonitoring.py RequestServer.py -k APIKeys.txt
+```
+7. Go ahead and run VideoMonitoring.py as well.
 
-    phoneNumber 
-    
-    nexmoClientId 
-    
-    nexmoClientSecret 
-    
-    imgurClientId 
-    
-    imgurClientSecret 
-    
-5. When running the program
-
-    VideoMonitoring.py RequestServer.py -k APIKeys.txt
-	
-6. Go ahead and run VideoMonitoring.py as well.
-
-Note: If you're not able to get any video, it probably means you need to change the video source on line 96
+Note: If you're not able to get any video, it probably means you need to change the video source on line 96 of VideoMonitoring.py
 
     webCam = cv2.VideoCapture(0)
 
