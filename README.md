@@ -15,19 +15,19 @@ In order to use this properly, please follow the directions below:
 5. Create .txt document anywhere you want and type the following. Make sure you have a space in between each one and its value. Essentially we want a space separate file, one item per line. Phone number needs to be (for US) 1##########
 6. Ability to open a port of your choice. I set it to use port 65534. You also need to set your Nexmo callback for SMS receving to your `http://<IPADDRESS>:<PORT>`
 
-```
-phoneNumber 1xxxxxxxxxx
-nexmoClientId xxxxxxxxxx
-nexmoClientSecret xxxxxxxxxx
-imgurClientId xxxxxxxxxx
-imgurClientSecret xxxxxxxxxx
-```
+    ```
+    phoneNumber 1xxxxxxxxxx
+    nexmoClientId xxxxxxxxxx
+    nexmoClientSecret xxxxxxxxxx
+    imgurClientId xxxxxxxxxx
+    imgurClientSecret xxxxxxxxxx
+    ```
 
 7. When running the program, run 
 
-```
-VideoMonitoring.py RequestServer.py -k APIKeys.txt
-```
+    ```
+    VideoMonitoring.py RequestServer.py -k APIKeys.txt
+    ```
 
 8. Go ahead and run VideoMonitoring.py as well.
 
