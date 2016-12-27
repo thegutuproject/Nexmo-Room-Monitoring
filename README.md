@@ -4,7 +4,7 @@ Hey!
 
 The primary purpose of this project was to open the door to Computer Vision and test it out, and Im ust say, its been a great success.
 
-This project will use an attached webcam and begin monitoring the room or area you set it for. If it detects any motion, itll take the frame that triggered it, and upload it to Imgur. Afterwards, it texts you a picture of the image so you can check it whereever you are.
+This project will use an attached webcam and begin monitoring the room or area you set it for. If it detects any motion, it'll take the frame that triggered it, and upload it to Imgur. Afterwards, it texts you a picture of the image so you can check it whereever you are.
 
 In order to use this properly, please follow the directions below:
 
@@ -27,7 +27,7 @@ In order to use this properly, please follow the directions below:
 7. When running the program, run 
 
     ```
-    VideoMonitoring.py RequestServer.py -k APIKeys.txt
+    RequestServer.py -k APIKeys.txt VideoMonitoring.py 
     ```
 
 Note: If you're not able to get any video, it probably means you need to change the video source on line 96 of VideoMonitoring.py
@@ -35,3 +35,5 @@ Note: If you're not able to get any video, it probably means you need to change 
     webCam = cv2.VideoCapture(0)
 
 Cycle through different numbers.
+
+The first thing you will notice is a text message with a link to Imgur. Go to that link, copy the code on the page, and text that code back to the number that gave you the link to begin with. This will allow the application to generate a valid token for use.
