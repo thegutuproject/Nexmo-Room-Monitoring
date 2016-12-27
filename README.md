@@ -25,7 +25,7 @@ In order to use this properly, please follow the directions below:
     
 5. When running the program
 
-	'''VideoMonitoring.py RequestServer.py -k APIKeys.txt'''
+    VideoMonitoring.py RequestServer.py -k APIKeys.txt
 	
 6. Go ahead and run VideoMonitoring.py as well.
 
