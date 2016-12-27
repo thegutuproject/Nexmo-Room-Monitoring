@@ -9,6 +9,7 @@ This project will use an attached webcam and begin monitoring the room or area y
 In order to use this properly, please follow the directions below:
 
 1. Install OpenCV2 for Python 2.7
+  * [You can use a precompiled one from this guide to save time](https://github.com/jabelone/OpenCV-for-Pi)
 2. Install Flask
 3. Install imutils
 4. Get a Nexmo API and Imgur API
