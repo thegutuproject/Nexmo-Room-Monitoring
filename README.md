@@ -29,8 +29,6 @@ In order to use this properly, please follow the directions below:
     VideoMonitoring.py RequestServer.py -k APIKeys.txt
     ```
 
-8. Go ahead and run VideoMonitoring.py as well.
-
 Note: If you're not able to get any video, it probably means you need to change the video source on line 96 of VideoMonitoring.py
 
     webCam = cv2.VideoCapture(0)
